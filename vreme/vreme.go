@@ -1,15 +1,18 @@
+// Package vreme help us with saving and displaying statistics for tempreature measurments
 package vreme
 
 import (
 	"fmt"
 )
 
+// Postaja is a struct that saves its name, place and the measurments for it
 type Postaja struct {
 	ime     string
 	kraj    string
 	meritve []float64
 }
 
+// DodajMeritev is a func that adds a measurment to a Postaja
 func DodajMeritev(postaje map[string]Postaja, oznaka string, temperatura float64, minTemp, maxTemp float64) {
 	postaja, obstaja := postaje[oznaka]
 	if !obstaja {
@@ -24,6 +27,7 @@ func DodajMeritev(postaje map[string]Postaja, oznaka string, temperatura float64
 	postaje[oznaka] = postaja
 }
 
+// IzpisMeritev displays all measurments for that Postaja
 func IzpisMeritev(postaje map[string]Postaja) {
 	fmt.Println("MERITVE:")
 	for oznaka, postaja := range postaje {
@@ -31,6 +35,7 @@ func IzpisMeritev(postaje map[string]Postaja) {
 	}
 }
 
+// IzpisPorocila displays min, max and avg for a whole map of Postaja's
 func IzpisPorocila(postaje map[string]Postaja, min_st_Mer int) {
 	fmt.Println("POROČILO:")
 	for oznaka, postaja := range postaje {
@@ -56,6 +61,7 @@ func IzpisPorocila(postaje map[string]Postaja, min_st_Mer int) {
 	}
 }
 
+// statistika is a private func that calculates the min,max and avg
 func statistika(postaje map[string]Postaja, oznaka string, min_st_Mer int) (najnizja, najvisja, povprecna float64, ok bool) {
 	postaja, ok := postaje[oznaka]
 
@@ -81,6 +87,7 @@ func statistika(postaje map[string]Postaja, oznaka string, min_st_Mer int) (najn
 	return najnizja, najvisja, povprecje, true
 }
 
+// DodajPostajo is a func that adds a new Postaja to a map of Postaja's
 func DodajPostajo(postaje map[string]Postaja, oznaka, ime, kraj string) {
 	postaje[oznaka] = Postaja{
 		ime:     ime,
