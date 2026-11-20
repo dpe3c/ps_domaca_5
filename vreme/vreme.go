@@ -10,13 +10,13 @@ type Postaja struct {
 	meritve []float64
 }
 
-func DodajMeritev(postaje map[string]Postaja, oznaka string, temperatura float64) {
+func DodajMeritev(postaje map[string]Postaja, oznaka string, temperatura float64, minTemp, maxTemp float64) {
 	postaja, obstaja := postaje[oznaka]
 	if !obstaja {
 		fmt.Println("Postaja ne obstaja.")
 		return
 	}
-	if temperatura < -50 || temperatura > 50 {
+	if temperatura < minTemp || temperatura > maxTemp {
 		fmt.Println("Meritev ni realna. Funkcija je bila prekinjena.")
 		return
 	}
@@ -31,10 +31,10 @@ func IzpisMeritev(postaje map[string]Postaja) {
 	}
 }
 
-func IzpisPorocila(postaje map[string]Postaja) {
+func IzpisPorocila(postaje map[string]Postaja, min_st_Mer int) {
 	fmt.Println("POROČILO:")
 	for oznaka, postaja := range postaje {
-		najnizja, najvisja, povprecje, ok := statistika(postaje, oznaka)
+		najnizja, najvisja, povprecje, ok := statistika(postaje, oznaka, min_st_Mer)
 
 		if !ok {
 			fmt.Printf("%s: premalo meritev\n", postaja.ime)
@@ -56,10 +56,10 @@ func IzpisPorocila(postaje map[string]Postaja) {
 	}
 }
 
-func statistika(postaje map[string]Postaja, oznaka string) (najnizja, najvisja, povprecna float64, ok bool) {
+func statistika(postaje map[string]Postaja, oznaka string, min_st_Mer int) (najnizja, najvisja, povprecna float64, ok bool) {
 	postaja, ok := postaje[oznaka]
 
-	if !ok || len(postaja.meritve) < 3 {
+	if !ok || len(postaja.meritve) < min_st_Mer {
 		return 0, 0, 0, false
 	}
 
